@@ -1,0 +1,10 @@
+/home/ramon/Desktop/ServerUnity/bin/Debug/netcoreapp2.0/ServerUnity.deps.json
+/home/ramon/Desktop/ServerUnity/bin/Debug/netcoreapp2.0/ServerUnity.runtimeconfig.json
+/home/ramon/Desktop/ServerUnity/bin/Debug/netcoreapp2.0/ServerUnity.runtimeconfig.dev.json
+/home/ramon/Desktop/ServerUnity/bin/Debug/netcoreapp2.0/ServerUnity.dll
+/home/ramon/Desktop/ServerUnity/bin/Debug/netcoreapp2.0/ServerUnity.pdb
+/home/ramon/Desktop/ServerUnity/obj/Debug/netcoreapp2.0/ServerUnity.csproj.CoreCompileInputs.cache
+/home/ramon/Desktop/ServerUnity/obj/Debug/netcoreapp2.0/ServerUnity.AssemblyInfoInputs.cache
+/home/ramon/Desktop/ServerUnity/obj/Debug/netcoreapp2.0/ServerUnity.AssemblyInfo.cs
+/home/ramon/Desktop/ServerUnity/obj/Debug/netcoreapp2.0/ServerUnity.dll
+/home/ramon/Desktop/ServerUnity/obj/Debug/netcoreapp2.0/ServerUnity.pdb
