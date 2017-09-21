@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 15.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerUnity", "ServerUnity.csproj", "{F279C093-B70F-403A-B00A-55966BB5057F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F279C093-B70F-403A-B00A-55966BB5057F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F279C093-B70F-403A-B00A-55966BB5057F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F279C093-B70F-403A-B00A-55966BB5057F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F279C093-B70F-403A-B00A-55966BB5057F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
