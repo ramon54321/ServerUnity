@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
-    public class ClientData
+    public class Client
     {
         public static int GetClientIdFromIpEndpoint(IPEndPoint ipEndpoint)
         {
@@ -14,8 +14,8 @@ namespace ServerConsole
         }
 
         public int ClientId { get; }
-        public Data_User data_User { get; }
-        public Data_Agent data_Agent { get; }
+        public User data_User { get; }
+        public Agent data_Agent { get; }
         public IPAddress IpAddress { get; }
         public int Port { get; }
         private Entity _entity;
@@ -38,7 +38,7 @@ namespace ServerConsole
             return pingsSent;
         }
 
-        public ClientData(int clientId, Data_User data_User, Data_Agent data_Agent, IPAddress ipAddress, int port)
+        public Client(int clientId, User data_User, Agent data_Agent, IPAddress ipAddress, int port)
         {
             this.ClientId = clientId;
             this.data_User = data_User;

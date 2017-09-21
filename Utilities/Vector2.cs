@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     public class Vector2
     {

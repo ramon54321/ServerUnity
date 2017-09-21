@@ -3,31 +3,31 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
-    public class Data_User
+    public class User
     {
         public ObjectId Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
 
-		public Data_User()
+		public User()
 		{
 	        Id = ObjectId.GenerateNewId();
 	    }
 
-        public Data_Agent AddAgentToUser()
+        public Agent AddAgentToUser()
         {
-            Data_Agent currentAgent = DatabaseManager.GetAgentFromUser(this);
+            Agent currentAgent = DatabaseManager.GetAgentFromUser(this);
             if(currentAgent != null)
                 return currentAgent;
-            Data_Agent agent = new Data_Agent(){ User = DatabaseManager.GetReferenceToObject("Users", Id) };
+            Agent agent = new Agent(){ User = DatabaseManager.GetReferenceToObject("Users", Id) };
             DatabaseManager.agentsCollection.InsertOne(agent);
             return agent;
         }
 
-        public static Data_User GetUserByUsername(string username)
+        public static User GetUserByUsername(string username)
         {
             return DatabaseManager.usersCollection.Find(userx => userx.Username == username).ToCursor().First();
         } 

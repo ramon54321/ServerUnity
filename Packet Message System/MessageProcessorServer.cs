@@ -7,7 +7,7 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     class MessageProcessorServer : NetworkSystem.MessageProcessor
     {
@@ -18,7 +18,7 @@ namespace ServerConsole
              * /disconnectrequest/
              */
 
-            int clientId = ClientData.GetClientIdFromIpEndpoint(remoteEndpoint);
+            int clientId = Client.GetClientIdFromIpEndpoint(remoteEndpoint);
 
             string[] segments = message.Split('/');
 
@@ -39,7 +39,7 @@ namespace ServerConsole
                 string password = segments[3];
 
                 // -- Check if client has user in database
-                List<Data_User> users = DatabaseManager.usersCollection.Find(obj => obj.Username == username).ToList();
+                List<User> users = DatabaseManager.usersCollection.Find(obj => obj.Username == username).ToList();
                 // -- Null check query
                 if (users.Count == 0)
                 {
@@ -58,7 +58,7 @@ namespace ServerConsole
                 }
 
                 // -- Create new client data and add to list
-                ClientData clientData = new ClientData(clientId, users[0], DatabaseManager.GetAgentFromUser(users[0]), remoteEndpoint.Address, remoteEndpoint.Port);
+                Client clientData = new Client(clientId, users[0], DatabaseManager.GetAgentFromUser(users[0]), remoteEndpoint.Address, remoteEndpoint.Port);
                 Program.clientManager.AddClient(clientData);
 
                 // -- Create new entity for client and link to client data
@@ -66,7 +66,7 @@ namespace ServerConsole
                 clientData.Entity = entity;
 
                 // -- Tell client connection is accepted + their entity id
-                Data_Agent agent = DatabaseManager.GetAgentFromUser(users[0]);
+                Agent agent = DatabaseManager.GetAgentFromUser(users[0]);
                 Program.clientManager.SendMessageToClient(clientId, "/connectrequestaccepted/" + entity.id + "/" + agent.GetInventoryJson() + "/");
 
                 // -- Send client data of all other clients
@@ -77,7 +77,7 @@ namespace ServerConsole
                  *      Send - Client.entity.id
                  *      Send - Data update (Client.entity.id)
                  */
-                foreach (ClientData clientDataIt in Program.clientManager.GetClients())
+                foreach (Client clientDataIt in Program.clientManager.GetClients())
                 {
                     if (clientDataIt == clientData)
                         continue;
@@ -106,7 +106,7 @@ namespace ServerConsole
                 Program.clientManager.SendMessageToClient(clientId, "/disconnectrequestaccepted/");
 
                 // -- Get client data
-                ClientData clientData = Program.clientManager.GetClient(clientId);
+                Client clientData = Program.clientManager.GetClient(clientId);
 
                 // -- Tell other clients about client disconnect
                 Program.clientManager.SendMessageToAllButOneClient(clientId, "/clientdisconnected/" + clientData.Entity.id + "/");
@@ -199,7 +199,7 @@ namespace ServerConsole
 
             else if (segments[1] == "setinventory")
             {
-                ClientData client = Program.clientManager.GetClient(clientId);
+                Client client = Program.clientManager.GetClient(clientId);
                 Console.WriteLine("Setting inventory in database for " + client.data_User.Username);
 
                 client.data_Agent.SetInventoryFromJson(segments[2]);
@@ -226,8 +226,8 @@ namespace ServerConsole
                     return;
                 }
 
-                ClientData client = Program.clientManager.GetClient(clientId);
-                ClientData clientTarget = Program.clientManager.GetClientByEntityId(entityId);
+                Client client = Program.clientManager.GetClient(clientId);
+                Client clientTarget = Program.clientManager.GetClientByEntityId(entityId);
                 if(clientTarget == null)
                 {
                     Console.WriteLine("Cant find entity with given id. No transfer happening.");
@@ -247,7 +247,7 @@ namespace ServerConsole
             }
             else if (segments[1] == "setprimaryweapon")
             {
-                ClientData client = Program.clientManager.GetClient(clientId);
+                Client client = Program.clientManager.GetClient(clientId);
                 Console.WriteLine("Setting primary weapon in database for " + client.data_User.Username);
 
                 client.data_Agent.PrimaryWeaponInstanceId = segments[2];
@@ -255,7 +255,7 @@ namespace ServerConsole
             }
             else if (segments[1] == "setprimarymagazine")
             {
-                ClientData client = Program.clientManager.GetClient(clientId);
+                Client client = Program.clientManager.GetClient(clientId);
                 Console.WriteLine("Setting primary magazine in database for " + client.data_User.Username);
 
                 client.data_Agent.PrimaryMagazineInstanceId = segments[2];

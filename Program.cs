@@ -7,7 +7,7 @@ using System.Text;
 using NetworkSystem;
 using System.Threading;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     public class Program
     {
@@ -87,7 +87,7 @@ namespace ServerConsole
                 if (command == "kickall")
                 {
                     // -- Kick all clients
-                    foreach (ClientData clientData in clientManager.GetClients())
+                    foreach (Client clientData in clientManager.GetClients())
                     {
                         clientData.KickClient();
                     }
@@ -117,7 +117,7 @@ namespace ServerConsole
                     Thread.Sleep(1000);
                     clientManager.SendMessageToAllClients("/ping/");
 
-                    foreach(ClientData clientData in clientManager.GetClients())
+                    foreach(Client clientData in clientManager.GetClients())
                     {
                         clientData.IncrementPingsSent();
 
@@ -155,15 +155,15 @@ namespace ServerConsole
                         entity.UpdateChunk();
                     }
 
-                    List<ClientData> clients = clientManager.GetClients();
+                    List<Client> clients = clientManager.GetClients();
 
-                    foreach (ClientData clientDataA in clients)
+                    foreach (Client clientDataA in clients)
                     {
                         IList<Entity> entitiesInClientRange = gameManager.entityManager.GetEntitiesInSurroundingChunks(clientDataA);
 
                         foreach (Entity e in entitiesInClientRange)
                         {
-                            ClientData clientDataB = e.clientData;
+                            Client clientDataB = e.clientData;
                             if(clientDataB != null)
                             {
                                 if (clientDataB == clientDataA)

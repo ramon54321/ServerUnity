@@ -10,4 +10,12 @@
     <PackageReference Include="MongoDB.Driver.Core" Version="2.4.4" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Web Server\" />
+    <Folder Include="Database\" />
+    <Folder Include="Packet Message System\" />
+    <Folder Include="Clients\" />
+    <Folder Include="Utilities\" />
+    <Folder Include="Entities\" />
+  </ItemGroup>
 </Project>

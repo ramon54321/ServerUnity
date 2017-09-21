@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     public class EntityManager
     {
@@ -32,7 +32,7 @@ namespace ServerConsole
 
         public Dictionary<string, IList<Entity>> chunkEntities = new Dictionary<string, IList<Entity>>();
 
-        public IList<Entity> GetEntitiesInSurroundingChunks(ClientData client)
+        public IList<Entity> GetEntitiesInSurroundingChunks(Client client)
         {
             // TODO: Calculate entities in surrouding chunks, not just current
             /*

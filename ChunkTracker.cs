@@ -8,7 +8,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {   
     public delegate void ClientSwitched();
 
@@ -19,7 +19,7 @@ namespace ServerConsole
 
         public IDictionary<string, Chunk> chunks = new Dictionary<string, Chunk>();
 
-        public bool SwitchClient(ClientData clientData, string fromChunkString, string toChunkString)
+        public bool SwitchClient(Client clientData, string fromChunkString, string toChunkString)
         {
             if(clientData == null)
                 return false;
@@ -54,9 +54,9 @@ namespace ServerConsole
 
     public class Chunk
     {
-        private List<ClientData> clientsInChunk = new List<ClientData>();
+        private List<Client> clientsInChunk = new List<Client>();
 
-        public bool AddClient(ClientData clientData)
+        public bool AddClient(Client clientData)
         {
             if(clientData == null)
                 return false;
@@ -65,7 +65,7 @@ namespace ServerConsole
             return true;
         }
 
-        public bool RemoveClient(ClientData clientData)
+        public bool RemoveClient(Client clientData)
         {
             if(clientData == null)
                 return false;
@@ -74,7 +74,7 @@ namespace ServerConsole
             return true;
         }
 
-        public List<ClientData> GetClientsInChunk()
+        public List<Client> GetClientsInChunk()
         {
             return this.clientsInChunk;
         }

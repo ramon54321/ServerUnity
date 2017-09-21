@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     public class Entity
     {
         public int id;
         public Vector2 position;
         public float rotation;
-        public ClientData clientData = null;
+        public Client clientData = null;
 
         // -- Health system used for damage
         public EntityHealthSystem entityHealthSystem;
