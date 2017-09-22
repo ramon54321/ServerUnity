@@ -7,7 +7,7 @@ using System.Text;
 using NetworkSystem;
 using System.Threading;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     public class Program
     {

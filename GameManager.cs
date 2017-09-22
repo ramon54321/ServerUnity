@@ -1,4 +1,4 @@
-﻿namespace ServerConsole
+﻿namespace ToyArmyServer
 {
     public class GameManager
     {

@@ -10,7 +10,7 @@ using System.Reflection;
 using MongoDB.Driver;
 using MongoDB.Bson;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     public delegate void RouteHandle(HttpListenerContext context, string _rootDirectory);
 

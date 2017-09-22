@@ -11,14 +11,14 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     public class DatabaseManager
     {
         public static MongoClient mongoClient = new MongoClient("mongodb://localhost:27017");
         public static IMongoDatabase database = null;
-        public static IMongoCollection<Data_User> usersCollection;
-		public static IMongoCollection<Data_Agent> agentsCollection;
+        public static IMongoCollection<User> usersCollection;
+		public static IMongoCollection<Agent> agentsCollection;
 		public static IMongoCollection<GameItems.GameItem> itemBlueprintsCollection;
 
         public DatabaseManager()
@@ -27,8 +27,8 @@ namespace ServerConsole
 
             // -- Register class mapping
 
-            usersCollection = GetCollection<Data_User>("Users");
-			agentsCollection = GetCollection<Data_Agent>("Agents");
+            usersCollection = GetCollection<User>("Users");
+			agentsCollection = GetCollection<Agent>("Agents");
             itemBlueprintsCollection = GetCollection<GameItems.GameItem>("ItemBlueprints");
 
             // -- Insert new blueprint
@@ -144,9 +144,9 @@ namespace ServerConsole
             return obj.ToJson();
         }
 
-		public static Data_Agent GetAgentById(ObjectId id)
+		public static Agent GetAgentById(ObjectId id)
         {
-            Data_Agent agent = null;
+            Agent agent = null;
             try
 			{
 				agent = agentsCollection.Find(agt => agt.Id == id).ToCursor().First();
@@ -158,9 +158,9 @@ namespace ServerConsole
             return agent;
         }
 
-		public static Data_User GetUserById(ObjectId id)
+		public static User GetUserById(ObjectId id)
         {
-            Data_User user = null;
+            User user = null;
             try
 			{
 				user = usersCollection.Find(usr => usr.Id == id).ToCursor().First();
@@ -172,9 +172,9 @@ namespace ServerConsole
             return user;
         }
 
-		public static Data_User GetUserByUsername(string username)
+		public static User GetUserByUsername(string username)
         {
-            Data_User user = null;
+            User user = null;
             try
 			{
 				user = usersCollection.Find(usr => usr.Username == username).ToCursor().First();
@@ -186,9 +186,9 @@ namespace ServerConsole
             return user;
         }
 
-		public static Data_User GetUserByEmail(string email)
+		public static User GetUserByEmail(string email)
         {
-            Data_User user = null;
+            User user = null;
             try
 			{
 				user = usersCollection.Find(usr => usr.Email == email).ToCursor().First();
@@ -200,9 +200,9 @@ namespace ServerConsole
             return user;
         }
 
-        public static Data_Agent GetAgentFromUser(Data_User user)
+        public static Agent GetAgentFromUser(User user)
         {
-            Data_Agent agent = null;
+            Agent agent = null;
             try
 			{
 				agent = agentsCollection.Find(agt => agt.User.Id == user.Id).ToCursor().First();
@@ -214,12 +214,12 @@ namespace ServerConsole
             return agent;
         }
 
-		public static Data_User GetUserFromAgent(Data_Agent agent)
+		public static User GetUserFromAgent(Agent agent)
 		{
-			Data_User user = null;
+			User user = null;
 			try
 			{
-                user = GetObjectFromReference<Data_User>(agent.User);
+                user = GetObjectFromReference<User>(agent.User);
             }
             catch (Exception e)
 			{

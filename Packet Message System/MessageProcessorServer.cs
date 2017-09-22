@@ -7,7 +7,7 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     class MessageProcessorServer : NetworkSystem.MessageProcessor
     {
@@ -39,7 +39,7 @@ namespace ServerConsole
                 string password = segments[3];
 
                 // -- Check if client has user in database
-                List<Data_User> users = DatabaseManager.usersCollection.Find(obj => obj.Username == username).ToList();
+                List<User> users = DatabaseManager.usersCollection.Find(obj => obj.Username == username).ToList();
                 // -- Null check query
                 if (users.Count == 0)
                 {
@@ -66,7 +66,7 @@ namespace ServerConsole
                 clientData.Entity = entity;
 
                 // -- Tell client connection is accepted + their entity id
-                Data_Agent agent = DatabaseManager.GetAgentFromUser(users[0]);
+                Agent agent = DatabaseManager.GetAgentFromUser(users[0]);
                 Program.clientManager.SendMessageToClient(clientId, "/connectrequestaccepted/" + entity.id + "/" + agent.GetInventoryJson() + "/");
 
                 // -- Send client data of all other clients

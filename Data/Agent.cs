@@ -5,9 +5,9 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
-    public class Data_Agent
+    public class Agent
     {
         public ObjectId Id { get; set; }
         public MongoDBRef User { get; set; }
@@ -15,7 +15,7 @@ namespace ServerConsole
         public string PrimaryWeaponInstanceId { get; set; }
         public string PrimaryMagazineInstanceId { get; set; }
 
-		public Data_Agent()
+		public Agent()
 		{
 	        Id = ObjectId.GenerateNewId();
             Inventory = new List<GameItems.GameItemInstance>();
@@ -67,7 +67,7 @@ namespace ServerConsole
 
             GameItems.GameItemInstance instance = Inventory[index];
 
-            Data_Agent agent = DatabaseManager.GetAgentFromUser(DatabaseManager.usersCollection.Find(usr => usr.Username == usernameReceiver).ToCursor().First());
+            Agent agent = DatabaseManager.GetAgentFromUser(DatabaseManager.usersCollection.Find(usr => usr.Username == usernameReceiver).ToCursor().First());
 
             Console.WriteLine("TargetName: " + usernameReceiver);
             Console.WriteLine("TargetActualName: " + DatabaseManager.GetUserFromAgent(agent).Username);

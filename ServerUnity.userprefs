@@ -1,0 +1,14 @@
+﻿<Properties StartupConfiguration="{F279C093-B70F-403A-B00A-55966BB5057F}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ServerUnity Status">
+    <Files>
+      <File FileName="ServerUnity Status" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.ServerUnity PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>

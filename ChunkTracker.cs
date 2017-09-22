@@ -8,7 +8,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {   
     public delegate void ClientSwitched();
 

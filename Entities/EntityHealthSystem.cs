@@ -1,4 +1,4 @@
-namespace ServerConsole
+namespace ToyArmyServer
 {    public class EntityHealthSystem
     {
         public Entity entity;

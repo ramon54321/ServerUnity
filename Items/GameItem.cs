@@ -18,13 +18,13 @@ namespace GameItems
         {
             Tinstance newInstance = (Tinstance) Activator.CreateInstance(typeof(Tinstance));
             newInstance.InstanceId = ObjectId.GenerateNewId();
-            newInstance.BlueprintId = ServerConsole.DatabaseManager.GetCollection<Titem>("ItemBlueprints").Find(item => item.ItemNameSystem == systemName).ToCursor().First().BlueprintId;
+            newInstance.BlueprintId = ToyArmyServer.DatabaseManager.GetCollection<Titem>("ItemBlueprints").Find(item => item.ItemNameSystem == systemName).ToCursor().First().BlueprintId;
             return (Tinstance) newInstance;
         }
 
         public static BsonDocument GetNewItemInstance(string systemName)
         {
-            BsonDocument blueprint = ServerConsole.DatabaseManager.GetCollection<BsonDocument>("ItemBlueprints").Find(new BsonDocument("ItemNameSystem", systemName)).ToCursor().First();
+            BsonDocument blueprint = ToyArmyServer.DatabaseManager.GetCollection<BsonDocument>("ItemBlueprints").Find(new BsonDocument("ItemNameSystem", systemName)).ToCursor().First();
             
             BsonDocument newInstance = new BsonDocument { 
                 { "_t",  blueprint["InstanceType"].AsBsonArray },
@@ -47,7 +47,7 @@ namespace GameItems
 
         protected Titem GetItemFromInstance<Titem>() where Titem : GameItem
         {
-            Titem newItem = (Titem) ServerConsole.DatabaseManager.itemBlueprintsCollection.Find(itm => itm.BlueprintId == BlueprintId).ToCursor().First();
+            Titem newItem = (Titem) ToyArmyServer.DatabaseManager.itemBlueprintsCollection.Find(itm => itm.BlueprintId == BlueprintId).ToCursor().First();
             newItem.InstanceId = InstanceId;
             SetInstanceUniqueData(newItem);
             return newItem;

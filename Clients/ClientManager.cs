@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ServerConsole
+namespace ToyArmyServer
 {
     public class ClientManager
     {
