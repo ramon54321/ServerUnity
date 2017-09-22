@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ServerConsole
 {
-    public class ClientData
+    public class Client
     {
         public static int GetClientIdFromIpEndpoint(IPEndPoint ipEndpoint)
         {
@@ -38,7 +38,7 @@ namespace ServerConsole
             return pingsSent;
         }
 
-        public ClientData(int clientId, Data_User data_User, Data_Agent data_Agent, IPAddress ipAddress, int port)
+        public Client(int clientId, Data_User data_User, Data_Agent data_Agent, IPAddress ipAddress, int port)
         {
             this.ClientId = clientId;
             this.data_User = data_User;

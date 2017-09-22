@@ -4,31 +4,70 @@ using System.Collections.Generic;
 
 namespace ServerConsole
 {
+    public enum EntityType
+    {
+        Player,
+        PlayerOther,
+        NPC
+    }
+
+    public class NPCEntityWaypoint
+    {
+        public Vector2 position;
+        public int time;
+    }
+
+    public class NPCEntity : Entity
+    {
+        List<NPCEntityWaypoint> waypoints;
+        private int currentWaypointIndex = 0;
+        private int currentTimeCount = 0;
+
+        public void Tick()
+        {
+            
+        }
+
+        public NPCEntity(int id, List<NPCEntityWaypoint> waypoints)
+        {
+            this.waypoints = waypoints;
+
+            this.id = id;
+            this.position = new Vector2(0,0);
+            this.rotation = 0;
+
+            this.EntityType = EntityType.NPC;
+
+            this.entityHealthSystem = new EntityHealthSystem(this, 100);
+        }
+    }
+
     public class Entity
     {
         public int id;
         public Vector2 position;
         public float rotation;
-        public ClientData clientData = null;
+        public Client clientData = null;
+
+        public EntityType EntityType { get; set; }
 
         // -- Health system used for damage
         public EntityHealthSystem entityHealthSystem;
 
-        public Entity()
-        {
-            this.position = new Vector2(0,0);
-            this.rotation = 0;
-
-            this.entityHealthSystem = new EntityHealthSystem(this, 100);
-        }
-
-        public Entity(int id)
+        public Entity(int id, EntityType entityType)
         {
             this.id = id;
             this.position = new Vector2(0,0);
             this.rotation = 0;
 
+            this.EntityType = entityType;
+
             this.entityHealthSystem = new EntityHealthSystem(this, 100);
+        }
+
+        protected Entity()
+        {
+
         }
 
         public string currentChunk = "";

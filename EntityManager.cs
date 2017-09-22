@@ -8,31 +8,43 @@ namespace ServerConsole
         private int currentId = 0;
 
         private Dictionary<int, Entity> entities = new Dictionary<int, Entity>();
+        public List<NPCEntity> npcEntities = new List<NPCEntity>();
 
+        /*
         public void CreateNewEntityWithAutoId(Entity entity)
         {
             entity.id = currentId;
             currentId++;
             entities.Add(entity.id, entity);
         }
+        */
 
-        public Entity CreateNewEntityWithAutoId()
+        public Entity CreateNewNPC(Vector2 position, List<NPCEntityWaypoint> waypoints)
         {
-            Entity newEntity = CreateNewEntity(currentId);
+            NPCEntity newEntity = new NPCEntity(currentId, waypoints);
+            currentId++;
+            entities.Add(newEntity.id, newEntity);
+            npcEntities.Add(newEntity);
+            return newEntity;
+        }
+
+        public Entity CreateNewEntityWithAutoId(EntityType entityType)
+        {
+            Entity newEntity = CreateNewEntity(currentId, entityType);
             currentId++;
             return newEntity;
         }
 
-        public Entity CreateNewEntity(int id)
+        public Entity CreateNewEntity(int id, EntityType entityType)
         {
-            Entity newEntity = new Entity(id);
+            Entity newEntity = new Entity(id, entityType);
             entities.Add(id, newEntity);
             return newEntity;
         }
 
         public Dictionary<string, IList<Entity>> chunkEntities = new Dictionary<string, IList<Entity>>();
 
-        public IList<Entity> GetEntitiesInSurroundingChunks(ClientData client)
+        public IList<Entity> GetEntitiesInSurroundingChunks(Client client)
         {
             // TODO: Calculate entities in surrouding chunks, not just current
             /*
@@ -78,6 +90,9 @@ namespace ServerConsole
             IList<Entity> currentChunkList = Program.gameManager.entityManager.chunkEntities[e.currentChunk];
             
             currentChunkList.Remove(e);
+
+            if(e.EntityType == EntityType.NPC)
+                npcEntities.Remove((NPCEntity) e);
 
             return entities.Remove(id);
         }

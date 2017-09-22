@@ -14,9 +14,9 @@ namespace ServerConsole
             this.MAX_CLIENTS = maxClients;
         }
 
-        private Dictionary<int, ClientData> clients = new Dictionary<int, ClientData>();
+        private Dictionary<int, Client> clients = new Dictionary<int, Client>();
 
-        public bool AddClient(ClientData clientData)
+        public bool AddClient(Client clientData)
         {
             if (clients.Count >= MAX_CLIENTS)
                 return false;
@@ -29,22 +29,22 @@ namespace ServerConsole
             clients.Remove(clientId);
         }
 
-        public List<ClientData> GetClients()
+        public List<Client> GetClients()
         {
-            List<ClientData> list = new List<ClientData>(clients.Values);
+            List<Client> list = new List<Client>(clients.Values);
             return list;
         }
 
-        public ClientData GetClient(int clientId)
+        public Client GetClient(int clientId)
         {
-            ClientData clientData = null;
+            Client clientData = null;
             clients.TryGetValue(clientId, out clientData);
             return clientData;
         }
 
-        public ClientData GetClientByEntityId(int entityId)
+        public Client GetClientByEntityId(int entityId)
         {
-            foreach(ClientData client in clients.Values)
+            foreach(Client client in clients.Values)
             {
                 if(client.Entity.id == entityId)
                     return client;
@@ -54,7 +54,7 @@ namespace ServerConsole
 
         public bool SendMessageToClient(int clientId, string message)
         {
-            ClientData clientData = GetClient(clientId);
+            Client clientData = GetClient(clientId);
 
             // -- Check if client exists
             if (clientData == null)
@@ -66,7 +66,7 @@ namespace ServerConsole
 
         public void SendMessageToAllClients(string message)
         {
-            foreach (ClientData clientData in clients.Values)
+            foreach (Client clientData in clients.Values)
             {
                 clientData.SendMessage(message);
             }
@@ -74,7 +74,7 @@ namespace ServerConsole
 
         public void SendMessageToAllButOneClient(int clientIdToIgnore, string message)
         {
-            foreach (ClientData clientData in clients.Values)
+            foreach (Client clientData in clients.Values)
             {
                 // -- Check for client to skip
                 if (clientData.ClientId == clientIdToIgnore)

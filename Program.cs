@@ -59,6 +59,9 @@ namespace ServerConsole
             // -- Start update
             Update();
 
+            // -- Start tick
+            Tick();
+
             // -- Wait for exit command
             CommandLoop();
 
@@ -68,7 +71,8 @@ namespace ServerConsole
 
         private static void BuildServerWorld()
         {
-            gameManager.entityManager.CreateNewEntityWithAutoId(new Entity());
+            Entity e = gameManager.entityManager.CreateNewEntityWithAutoId(EntityType.NPC);
+            e.SetPosition(1,1);
         }
 
         private static void CommandLoop()
@@ -87,7 +91,7 @@ namespace ServerConsole
                 if (command == "kickall")
                 {
                     // -- Kick all clients
-                    foreach (ClientData clientData in clientManager.GetClients())
+                    foreach (Client clientData in clientManager.GetClients())
                     {
                         clientData.KickClient();
                     }
@@ -117,7 +121,7 @@ namespace ServerConsole
                     Thread.Sleep(1000);
                     clientManager.SendMessageToAllClients("/ping/");
 
-                    foreach(ClientData clientData in clientManager.GetClients())
+                    foreach(Client clientData in clientManager.GetClients())
                     {
                         clientData.IncrementPingsSent();
 
@@ -129,6 +133,25 @@ namespace ServerConsole
                 }
             });
             pingThread.Start();
+        }
+
+        private static void Tick()
+        {
+            Thread tickThread = new Thread(delegate ()
+            {
+                Console.WriteLine("Tick thread started.");
+
+                while (true)
+                {
+                    Thread.Sleep(1000);
+
+                    foreach(NPCEntity npc in gameManager.entityManager.npcEntities)
+                    {
+                        npc.Tick();
+                    }
+                }
+            });
+            tickThread.Start();
         }
 
         private static void Update()
@@ -155,15 +178,15 @@ namespace ServerConsole
                         entity.UpdateChunk();
                     }
 
-                    List<ClientData> clients = clientManager.GetClients();
+                    List<Client> clients = clientManager.GetClients();
 
-                    foreach (ClientData clientDataA in clients)
+                    foreach (Client clientDataA in clients)
                     {
                         IList<Entity> entitiesInClientRange = gameManager.entityManager.GetEntitiesInSurroundingChunks(clientDataA);
 
                         foreach (Entity e in entitiesInClientRange)
                         {
-                            ClientData clientDataB = e.clientData;
+                            Client clientDataB = e.clientData;
                             if(clientDataB != null)
                             {
                                 if (clientDataB == clientDataA)

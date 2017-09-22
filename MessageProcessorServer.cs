@@ -18,7 +18,7 @@ namespace ServerConsole
              * /disconnectrequest/
              */
 
-            int clientId = ClientData.GetClientIdFromIpEndpoint(remoteEndpoint);
+            int clientId = Client.GetClientIdFromIpEndpoint(remoteEndpoint);
 
             string[] segments = message.Split('/');
 
@@ -58,11 +58,11 @@ namespace ServerConsole
                 }
 
                 // -- Create new client data and add to list
-                ClientData clientData = new ClientData(clientId, users[0], DatabaseManager.GetAgentFromUser(users[0]), remoteEndpoint.Address, remoteEndpoint.Port);
+                Client clientData = new Client(clientId, users[0], DatabaseManager.GetAgentFromUser(users[0]), remoteEndpoint.Address, remoteEndpoint.Port);
                 Program.clientManager.AddClient(clientData);
 
                 // -- Create new entity for client and link to client data
-                Entity entity = Program.gameManager.entityManager.CreateNewEntityWithAutoId();
+                Entity entity = Program.gameManager.entityManager.CreateNewEntityWithAutoId(EntityType.Player);
                 clientData.Entity = entity;
 
                 // -- Tell client connection is accepted + their entity id
@@ -77,17 +77,17 @@ namespace ServerConsole
                  *      Send - Client.entity.id
                  *      Send - Data update (Client.entity.id)
                  */
-                foreach (ClientData clientDataIt in Program.clientManager.GetClients())
+                foreach (Client clientDataIt in Program.clientManager.GetClients())
                 {
                     if (clientDataIt == clientData)
                         continue;
 
                     // -- Send the info of other client on server to newly connected client
-                    Program.clientManager.SendMessageToClient(clientId, "/clientspawn/" + clientDataIt.Entity.id + "/");
+                    Program.clientManager.SendMessageToClient(clientId, "/spawnentity/" + clientDataIt.Entity.id + "/" + clientDataIt.Entity.EntityType + "/");
                 }
 
                 // -- Tell other clients about new client
-                Program.clientManager.SendMessageToAllButOneClient(clientId, "/newclient/" + entity.id + "/");
+                //Program.clientManager.SendMessageToAllButOneClient(clientId, "/newclient/" + entity.id + "/");
 
                 Console.WriteLine("Client connected and entity data created.");
             }
@@ -106,7 +106,7 @@ namespace ServerConsole
                 Program.clientManager.SendMessageToClient(clientId, "/disconnectrequestaccepted/");
 
                 // -- Get client data
-                ClientData clientData = Program.clientManager.GetClient(clientId);
+                Client clientData = Program.clientManager.GetClient(clientId);
 
                 // -- Tell other clients about client disconnect
                 Program.clientManager.SendMessageToAllButOneClient(clientId, "/clientdisconnected/" + clientData.Entity.id + "/");
@@ -171,6 +171,17 @@ namespace ServerConsole
                     entity.rotation = rot;
                 }
             }
+            else if (segments[1] == "entityinforequest")
+            {
+                int id = 0;
+                if (!Int32.TryParse(segments[2], out id))
+                {
+                    // -- Failed to parse id, send invalid flag
+                    Console.WriteLine("Cant parse issued entity id.");
+                }
+                Entity e = Program.gameManager.entityManager.GetEntityById(id);
+                Program.clientManager.GetClient(clientId).SendMessage("/spawnentity/" + e.id + "/" + e.EntityType + "/");
+            }
             else if (segments[1] == "entityhit")
             {
                 Console.WriteLine("Damaging entity.");
@@ -199,7 +210,7 @@ namespace ServerConsole
 
             else if (segments[1] == "setinventory")
             {
-                ClientData client = Program.clientManager.GetClient(clientId);
+                Client client = Program.clientManager.GetClient(clientId);
                 Console.WriteLine("Setting inventory in database for " + client.data_User.Username);
 
                 client.data_Agent.SetInventoryFromJson(segments[2]);
@@ -226,8 +237,8 @@ namespace ServerConsole
                     return;
                 }
 
-                ClientData client = Program.clientManager.GetClient(clientId);
-                ClientData clientTarget = Program.clientManager.GetClientByEntityId(entityId);
+                Client client = Program.clientManager.GetClient(clientId);
+                Client clientTarget = Program.clientManager.GetClientByEntityId(entityId);
                 if(clientTarget == null)
                 {
                     Console.WriteLine("Cant find entity with given id. No transfer happening.");
@@ -247,7 +258,7 @@ namespace ServerConsole
             }
             else if (segments[1] == "setprimaryweapon")
             {
-                ClientData client = Program.clientManager.GetClient(clientId);
+                Client client = Program.clientManager.GetClient(clientId);
                 Console.WriteLine("Setting primary weapon in database for " + client.data_User.Username);
 
                 client.data_Agent.PrimaryWeaponInstanceId = segments[2];
@@ -255,7 +266,7 @@ namespace ServerConsole
             }
             else if (segments[1] == "setprimarymagazine")
             {
-                ClientData client = Program.clientManager.GetClient(clientId);
+                Client client = Program.clientManager.GetClient(clientId);
                 Console.WriteLine("Setting primary magazine in database for " + client.data_User.Username);
 
                 client.data_Agent.PrimaryMagazineInstanceId = segments[2];
